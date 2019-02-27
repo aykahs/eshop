@@ -140,7 +140,7 @@
                         }
                         else
                         {
-                            this.product.submit('put','http://127.0.0.1:8000/api/Admin/update/products/'+this.product_id);
+                            this.product.submit('patch','http://127.0.0.1:8000/api/Admin/update/products/'+this.product_id);
                             this.fetchproduct();
 
                         }

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-
+App::bind('App\Repositories\ProductInterface','App\Repositories\ProductRepository');
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,7 +21,7 @@ Route::get('/products','Userapicontroller@index');
 Route::prefix('Admin')->group(function () {
 Route::post('/create/employer', 'Admincontroller@register_emp');
 Route::post('/create/products', 'Productcontroller@store');
-Route::put('/update/products/{id}', 'Productcontroller@update');
+Route::patch('/update/products/{id}', 'Productcontroller@update');
 Route::delete('/destroy/products/{id}', 'Productcontroller@destroy');
 
 

@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Repositories\Repository;
+use App\Repositories\ProductInterface;
 use App\product;
 use App\Http\Resources\productResource as ProductResource;
 class Userapicontroller extends Controller
 {
     protected $model;
 
-    public function __construct(product $product)
+    public function __construct(ProductInterface $model)
     {
         // set the model
-        $this->model = new Repository($product);
+        $this->model = $model;
 
     }
     public function index()
@@ -22,5 +22,5 @@ class Userapicontroller extends Controller
   // dd($this->model->all());
      return ProductResource::collection($this->model->paginate(6));
     }
-    
+
 }
