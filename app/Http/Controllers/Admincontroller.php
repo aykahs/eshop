@@ -1,20 +1,18 @@
 <?php
-
 namespace App\Http\Controllers;
-use App\Repositories\EmployerRepository;
 use Illuminate\Http\Request;
-use App\Employer;
 use App\Http\Resources\employerResource as EmployerResource;
-use Illuminate\Support\Facades\Auth;
+
 class Admincontroller extends Controller
 {
-    protected $model;
 
-    public function __construct(Employer $employer)
+
+    public function __construct( )
     {
-       $this->middleware('auth:employer')->except(['register_emp']);
-        $this->model = new EmployerRepository($employer);
+       $this->middleware('auth:employer');
+
     }
+
     public function index()
     {
         $this->data('title',$this->make_title('home'));
@@ -25,15 +23,10 @@ class Admincontroller extends Controller
     {
         return view('Admins.addemployer');
     }
-
-    public function register_emp(Request $request)
+    public function addproduct()
     {
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'role' =>'required',
-            'password' => 'required'
-        ]);
-        new EmployerResource( $this->model->create($validatedData));
+        return view('Admins.addproduct');
     }
+
+
 }

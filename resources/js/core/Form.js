@@ -1,4 +1,5 @@
 import Errors from './Errors';
+import swal from 'sweetalert';
 class Form{
 
     constructor(data)
@@ -52,9 +53,9 @@ class Form{
           {
 
           //  alert(response.data.message);
-            alert('product post sucess');
-          this.errors.clear();
-          this.reset();
+            swal("Product Is Added", "success");
+            this.errors.clear();
+            this.reset();
 
           }
 
@@ -62,7 +63,7 @@ class Form{
           {
 
           //  alert(response.data.message);
-            alert('product deleted');
+          swal("Product Is Deleted", "success");
           this.errors.clear();
           this.reset();
 

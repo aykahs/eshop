@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 App::bind('App\Repositories\ProductInterface','App\Repositories\ProductRepository');
+App::bind('App\Repositories\EmployerInterface','App\Repositories\EmployerRepository');
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,10 +20,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/products','Userapicontroller@index');
 
 Route::prefix('Admin')->group(function () {
-Route::post('/create/employer', 'Admincontroller@register_emp');
-Route::post('/create/products', 'Productcontroller@store');
-Route::patch('/update/products/{id}', 'Productcontroller@update');
-Route::delete('/destroy/products/{id}', 'Productcontroller@destroy');
+
+        Route::get('/employers', 'employerapicontoller@index');
+
+        Route::post('/create/employer', 'employerapicontoller@store');
+
+        Route::delete('/destroy/employer/{id}', 'employerapicontoller@delete');
+
+        Route::post('/create/products', 'Productcontroller@store');
+
+        Route::put('/update/products/{id}', 'Productcontroller@update');
+
+        Route::delete('/destroy/products/{id}', 'Productcontroller@destroy');
 
 
 });

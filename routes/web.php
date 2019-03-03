@@ -16,7 +16,7 @@ Route::prefix('Admin')->group(function () {
    Route::Post('/login', 'Auth\Adminlogincontroller@login')->name('login.employer');
    Route::get('/home', 'Admincontroller@index')->name('admin.home');
    Route::get('/create/employer', 'Admincontroller@addemp')->name('add.employer');
-   Route::get('/create/product', 'Adminproductcontroller@index')->name('add.product');
+   Route::get('/create/product', 'Admincontroller@addproduct')->name('add.product');
 
 
 });

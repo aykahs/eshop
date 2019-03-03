@@ -16,9 +16,9 @@ class productseedtable extends Seeder
             product::create(
             [
                 'imagepath'=>$faker->imageUrl($width = 340, $height = 380, 'cats') ,
-                'title'=>$faker->title,
+                'title'=>$faker->name,
                 'description'=> $faker->paragraph(2),
-                'categories'=> $faker->title,
+                'categories'=> $faker->word,
                 'price'=> $faker->randomDigitNotNull
             ]
         );

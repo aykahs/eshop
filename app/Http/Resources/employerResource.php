@@ -19,7 +19,7 @@ class employerResource extends JsonResource
         'name' => $this->name,
         'email' => $this->name,
         'role' => $this->role,
-        'password' =>$this->pasword
+
            ];
     }
 }

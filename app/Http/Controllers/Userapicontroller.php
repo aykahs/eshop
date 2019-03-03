@@ -1,14 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Repositories\ProductInterface;
-use App\product;
 use App\Http\Resources\productResource as ProductResource;
 class Userapicontroller extends Controller
 {
-    protected $model;
+    private $model;
 
     public function __construct(ProductInterface $model)
     {

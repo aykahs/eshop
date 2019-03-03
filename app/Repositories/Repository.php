@@ -2,24 +2,14 @@
  namespace App\Repositories;
 use Illuminate\Http\Request;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Repository implements RepositoryInterface
+abstract class Repository
 {
-    // model property on class instances
-    protected $model;
-
-    // Constructor to bind model to repo
-    public function __construct(Model $model)
-    {
-        $this->model = $model;
-    }
 
     public function paginate($perPage = 3, $columns = array('*')) {
         return $this->model->orderBy('id', 'DESC')->paginate($perPage, $columns);
     }
 
-    // Get all instances of model
+
     public function all()
     {
         return $this->model->all();

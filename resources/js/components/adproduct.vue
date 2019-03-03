@@ -1,7 +1,7 @@
 <template>
 <div>
                    <div>
-                        <h1>Add Employer</h1>
+                        <h1>Add Product</h1>
                               <form @submit.prevent="onsubmitproduct" @keydown="product.errors.clear($event.target.name)">
                                   <div class="field">
                             <label class="label">Title</label>
@@ -133,14 +133,14 @@
                 {
                     if(this.edit === false)
                         {
-                            console.log('post');
+
                             this.product.submit('post','http://127.0.0.1:8000/api/Admin/create/products');
                             this.fetchproduct();
 
                         }
                         else
                         {
-                            this.product.submit('patch','http://127.0.0.1:8000/api/Admin/update/products/'+this.product_id);
+                            this.product.submit('put','http://127.0.0.1:8000/api/Admin/update/products/'+this.product_id);
                             this.fetchproduct();
 
                         }
@@ -165,15 +165,26 @@
                next_page_url : links.next,
                prev_page_url : links.prev
            }
-
            this. pagination =  pagination;
-
-
        },
         deleteproduct(id)
        {
-                    this.del.delete('delete','http://127.0.0.1:8000/api/Admin/destroy/products/'+id);
+           swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this imaginary file!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                })
+                .then((willDelete) => {
+                if (willDelete) {
+                     this.del.delete('delete','http://127.0.0.1:8000/api/Admin/destroy/products/'+id);
                      this.fetchproduct();
+                } else {
+                    swal("Your imaginary file is safe!");
+                }
+                });
+
 
        },
         editproduct(product)

@@ -101,7 +101,7 @@
                                         <ul class="menu-list">
                                           <li><a href="{{ route('add.employer')}}">Add Employer</a></li>
                                           <li>
-                                        <a >add</a>
+                                        <a href="{{ route('add.product')}}">Add Product</a>
                                           </li>
                                           <li><a>Invitations</a></li>
                                           <li><a>Cloud Storage</a></li>

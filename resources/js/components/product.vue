@@ -40,7 +40,7 @@
     <div class="level-item">
                 <div class="field has-addons" id="button" >
                         <p class="control">
-                        <input class="input" type="text" placeholder="Find a post">
+                        <input class="input" type="text" placeholder="Find a product" v-model="search">
                         </p>
 
                         <p class="control">
@@ -92,7 +92,7 @@
   </div>
 </div>
 <div id="product_box">
-            <div v-for="product in products" v-bind:key="product.id">
+            <div v-for="product in filteredproduct" v-bind:key="product.id">
                 <div class="card" style="width: 18rem;" id="boxx">
                     <a  @click=" open_model(product)">
                     <figure class="image is-3by2">
@@ -132,6 +132,7 @@ import axios from 'axios';
 
             showmodel: false,
             products:[],
+            search:'',
             pagination:{},
              product:{
                 title:'',
@@ -146,6 +147,7 @@ import axios from 'axios';
        {
             this.fetchproduct();
        },
+
        methods:
        {
            add_to_cart(id)
@@ -196,8 +198,18 @@ import axios from 'axios';
        {
            this.showmodel = false;
        }
+    },
+       computed:
+       {
+           filteredproduct:function()
+           {
+               return this.products.filter((p) =>
+               {
+                   return p.title.match(this.search) ||  p.description.match(this.search) ;
+               });
+           }
+        }
 
-    }
  };
 </script>
 <style>
