@@ -17,31 +17,11 @@ abstract class Repository
     public function create(array $data)
     {
 
-        //  if($request->hasFile($data['imagepath'])){
 
-        // 	$filenameWithExt = $request->file($data['imagepath'])->getClientOriginalName();
-        //     // Get just filename
-        //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-        //     // Get just ext
-        //     $extension = $request->file($data['imagepath'])->getClientOriginalExtension();
-        //     // Filename to store
-        //     $fileNameToStore= $filename.'_'.time().'.'.$extension;
-        //     // Upload Image
-        //     $path = $request->file($data['imagepath'])->storeAs('public/image', $fileNameToStore);
-
-        // }
-
-        // return $this->model->create([
-        //     'imagepath' =>  $data['imagepath'],
-        //     'title' => $data['title'],
-        //     'description' =>$data['description'],
-        //     'categories' =>$data['categories'],
-        //     'price' =>$data['price']
-        // ]);
         return $this->model->create($data);
     }
 
-    // update record in the database
+
     public function update(array $data, $id)
     {
         $record = $this->model->find($id);
@@ -58,7 +38,6 @@ abstract class Repository
     public function delete($id)
     {
         $result=$this->model->find($id);
-       // dd($result);
         return $result::destroy($id);
     }
 
