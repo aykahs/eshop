@@ -17,11 +17,23 @@
                           <span class=" help is-danger"  v-if="product.errors.has('price')" v-text="product.errors.get('price')"></span>
                             </div>
                           </div>
-                            <div class="field">
+                            <!-- <div class="field">
                                 <label class="label">Categories</label>
                                 <div class="control has-icons-left has-icons-right">
                                 <input class="input" name="categories" v-model="product.categories" type="text" placeholder=" Categories">
                             <span class=" help is-danger"  v-if="product.errors.has('categories')" v-text="product.errors.get('categories')"></span>
+                                </div>
+                            </div> -->
+                            <div class="field">
+                                 <label class="label">Categories</label>
+                                <div class="control">
+                                    <div class="select">
+                                    <select name="categories" v-model="product.categories">
+                                         <option disabled  value="">select..</option>
+                                            <option  v-for="categorie in categories" v-bind:key="categorie.id">{{  categorie.name }}</option>
+                                    </select>
+                                         <span class=" help is-danger"  v-if="product.errors.has('categories')" v-text="product.errors.get('categories')"></span>
+                                    </div>
                                 </div>
                             </div>
                           <div class="field">
@@ -106,6 +118,7 @@
         {
             return{
             products:[],
+            categories:[],
             pagination:{},
             edit:false,
             product_id:'',
@@ -126,6 +139,7 @@
          created()
        {
             this.fetchproduct();
+            this.fetchcategories();
        },
          methods:
         {
@@ -154,6 +168,16 @@
                 .then((response) => {
                     app.products = response.data.data,
                     app.makepagination(response.data.meta, response.data.links)
+                });
+
+       },
+        fetchcategories(page_url)
+           {
+               page_url = page_url || 'http://127.0.0.1:8000/api/Admin/categories';
+               var app = this;
+              axios.get(page_url)
+                .then((response) => {
+                    app.categories = response.data.data
                 });
 
        },

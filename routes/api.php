@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 App::bind('App\Repositories\ProductInterface','App\Repositories\ProductRepository');
 App::bind('App\Repositories\EmployerInterface','App\Repositories\EmployerRepository');
+App::bind('App\Repositories\CategoriesInterface','App\Repositories\CategoriesRepository');
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,6 +22,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/products','Userapicontroller@index');
 
 Route::prefix('Admin')->group(function () {
+
+        Route::get('/categories', 'categoriesapicontroller@index');
 
         Route::get('/employers', 'employerapicontoller@index');
 

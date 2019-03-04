@@ -2057,10 +2057,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       products: [],
+      categories: [],
       pagination: {},
       edit: false,
       product_id: '',
@@ -2076,6 +2089,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.fetchproduct();
+    this.fetchcategories();
   },
   methods: {
     onsubmitproduct: function onsubmitproduct() {
@@ -2092,6 +2106,13 @@ __webpack_require__.r(__webpack_exports__);
       var app = this;
       axios.get(page_url).then(function (response) {
         app.products = response.data.data, app.makepagination(response.data.meta, response.data.links);
+      });
+    },
+    fetchcategories: function fetchcategories(page_url) {
+      page_url = page_url || 'http://127.0.0.1:8000/api/Admin/categories';
+      var app = this;
+      axios.get(page_url).then(function (response) {
+        app.categories = response.data.data;
       });
     },
     makepagination: function makepagination(meta, links) {
@@ -38548,35 +38569,53 @@ var render = function() {
           _c("div", { staticClass: "field" }, [
             _c("label", { staticClass: "label" }, [_vm._v("Categories")]),
             _vm._v(" "),
-            _c(
-              "div",
-              { staticClass: "control has-icons-left has-icons-right" },
-              [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.product.categories,
-                      expression: "product.categories"
-                    }
-                  ],
-                  staticClass: "input",
-                  attrs: {
-                    name: "categories",
-                    type: "text",
-                    placeholder: " Categories"
-                  },
-                  domProps: { value: _vm.product.categories },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
+            _c("div", { staticClass: "control" }, [
+              _c("div", { staticClass: "select" }, [
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.product.categories,
+                        expression: "product.categories"
                       }
-                      _vm.$set(_vm.product, "categories", $event.target.value)
+                    ],
+                    attrs: { name: "categories" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.product,
+                          "categories",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
                     }
-                  }
-                }),
+                  },
+                  [
+                    _c("option", { attrs: { disabled: "", value: "" } }, [
+                      _vm._v("select..")
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.categories, function(categorie) {
+                      return _c("option", { key: categorie.id }, [
+                        _vm._v(_vm._s(categorie.name))
+                      ])
+                    })
+                  ],
+                  2
+                ),
                 _vm._v(" "),
                 _vm.product.errors.has("categories")
                   ? _c("span", {
@@ -38588,8 +38627,8 @@ var render = function() {
                       }
                     })
                   : _vm._e()
-              ]
-            )
+              ])
+            ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "field" }, [

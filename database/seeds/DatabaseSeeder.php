@@ -10,11 +10,11 @@ class DatabaseSeeder extends Seeder
      * @return void
      */
     protected $tables = [
-        'products','employers','users'
+        'products','employers','users','categories'
     ];
     protected $Seeders =
     [
-        'productseedtable','employerseedtable','userseedtable'
+        'productseedtable','employerseedtable','userseedtable','categorieseedtable'
 
     ];
 
