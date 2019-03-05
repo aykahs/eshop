@@ -19,6 +19,8 @@ class Userapicontroller extends Controller
 
   // dd($this->model->all());
      return ProductResource::collection($this->model->paginate(6));
-    }
+
+
+     }
 
 }

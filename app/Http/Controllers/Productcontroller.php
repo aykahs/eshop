@@ -21,8 +21,9 @@ class Productcontroller extends Controller
     {
 
    // return $this->model->all();
-     return ProductResource::collection($this->model->paginate(6));
+    return ProductResource::collection($this->model->paginate(6));
     }
+
 
     /**
      * Show the form for creating a new resource.
