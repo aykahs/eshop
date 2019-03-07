@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Repositories\ProductInterface;
 use App\Repositories\OrderInterface;
 use App\Http\Resources\productResource as ProductResource;
+
 use App\Http\Resources\OrderResource as OrderResource;
 use Auth;
 use App\Cart;
