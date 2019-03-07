@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Session;
 class HomeController extends Controller
 {
     /**
@@ -13,7 +13,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['index','try']);
+        $this->middleware('auth')->except(['index','Cart']);
     }
 
     /**
@@ -21,9 +21,9 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function try()
+    public function Cart()
     {
-        return view('users.try');
+        return view('users.cart');
     }
     public function index()
     {
@@ -31,7 +31,15 @@ class HomeController extends Controller
 
         return view('users.index',$this->data);
     }
-
+    public function payment()
+    {
+        if(!Session::has('cart') || Session::get('cart')->totalprice == 0)
+        {
+            return redirect()->route('home');
+        }
+      
+        return view('users.payment');
+    }
     public function profile()
     {
         return view('users.home');

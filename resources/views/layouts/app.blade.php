@@ -12,6 +12,7 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        @yield('style')
     </head>
     <body>
         <div>
@@ -29,9 +30,9 @@
                                 <!-- Left Side Of Navbar -->
                                 <ul class="navbar-nav mr-auto">
                                   <li>
-                                        <a href="">
+                                        {{--  <a href="">
                                                 <span class="badge">{{ Session::has('cart')  ? Session::get('cart')->totalQty:'' }}</span>
-                                        </a>
+                                        </a>  --}}
                                   </li>
                                   <li>
 
@@ -101,9 +102,8 @@
         <footer class="footer">
                 <div class="content has-text-centered">
                   <p>
-                    <strong>Bulma</strong> by <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is licensed
-                    <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
-                    is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+                    <strong>Created </strong> by prajwol shakya. The source code is licensed
+                    The website content is licensed 
                   </p>
                 </div>
         </footer>

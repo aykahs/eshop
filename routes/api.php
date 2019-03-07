@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 App::bind('App\Repositories\ProductInterface','App\Repositories\ProductRepository');
 App::bind('App\Repositories\EmployerInterface','App\Repositories\EmployerRepository');
 App::bind('App\Repositories\CategoriesInterface','App\Repositories\CategoriesRepository');
+App::bind('App\Repositories\OrderInterface','App\Repositories\OrderRepository');
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,28 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('/products','Userapicontroller@index');
+
+Route::get('/addcart/{id}', 'Userapicontroller@add_to_cart');
+
+Route::get('/countcart', 'Userapicontroller@Productcount');
+
+Route::get('/cart', 'Userapicontroller@cart');
+
+Route::get('/cart/increment/{id}', 'Userapicontroller@incr_product');
+
+Route::get('/cart/decrement/{id}', 'Userapicontroller@decr_product');
+
+Route::get('/cart/delete/{id}', 'Userapicontroller@delete');
+
+Route::get('/cart/paymentinfo', 'Userapicontroller@getcheckout');
+
+Route::post('/cart/pay', 'Userapicontroller@payment');
+
+
+
+
+
+
 
 Route::prefix('Admin')->group(function () {
 

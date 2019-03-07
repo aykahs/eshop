@@ -25,6 +25,9 @@ Vue.component('navbar', require('./components/navbar.vue').default);
 Vue.component('product', require('./components/product.vue').default);
 Vue.component('Addmployer', require('./components/addemp.vue').default);
 Vue.component('Addproduct', require('./components/adproduct.vue').default);
+Vue.component('cart', require('./components/cart.vue').default);
+Vue.component('payment', require('./components/payment.vue').default);
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

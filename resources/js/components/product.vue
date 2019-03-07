@@ -6,7 +6,7 @@
 </div>
 
 <div id="cart">
-    <nav class="level navbar is-white" role="navigation" aria-label="pagination">
+    <nav class="level navbar is-white" role="navigation" aria-label="pagination" id="nav">
   <!-- Left side -->
 
   <div class="level-left">
@@ -16,19 +16,21 @@
 
   <!-- Right side -->
   <div class="level-right" id="cart">
+      <a href="/cart" >
       <span>
-          <i class="fas fa-shopping-cart"></i>
+        <i  v-text="pcount" class="fas fa-shopping-cart" ></i>
       </span>
+      </a>
 
   </div>
 </nav>
 
     <div class="container">
         <nav class="pagination is-right" role="navigation" aria-label="pagination">
-         <div class="level-left">
+         <div class="level-left" id="nav">
              <div class="level-item">
 
-                    <a class="pagination-previous" v-bind:class="[{disabled: !pagination.prev_page_url }]" @click="fetchproduct(pagination.prev_page_url )">Previous</a>
+                    <a class="pagination-previous is-white" v-bind:class="[{disabled: !pagination.prev_page_url }]" @click="fetchproduct(pagination.prev_page_url )">Previous</a>
                     <a class="pagination-next" v-bind:class="[{disabled: !pagination.next_page_url}]"  @click="fetchproduct(pagination.next_page_url)">Next page</a>
 
                     <a class="pagination-link" aria-label="Goto page 1"> {{ pagination.current_page }}</a>
@@ -101,12 +103,12 @@
                     </a>
                 <div class="card-body">
                     <span>
-                    Title:<h5 class="card-title">{{ product.title }}</h5>
+                    <h5 class="card-title">{{ product.title }}</h5>
                     </span>
 
                     <p class="card-text">
                         <span class="icon is-small">
-                            <i class="fas fa-dollar-sign"></i> {{ product.price }}
+                            ${{ product.price }}
                             </span>
                     </p>
                     <a class="button is-primary" @click="add_to_cart(product.id)">Add to cart</a>
@@ -131,6 +133,7 @@ import axios from 'axios';
             return{
 
             showmodel: false,
+            pcount:'',
             products:[],
             search:'',
             pagination:{},
@@ -146,13 +149,20 @@ import axios from 'axios';
        created()
        {
             this.fetchproduct();
+            this.productcount();
+
        },
 
        methods:
        {
-           add_to_cart(id)
+           productcount()
            {
-               console.log(id);
+                 var app = this;
+               axios.get('http://127.0.0.1:8000/api/countcart')
+                .then((response) => {
+                    app.pcount = response.data.data
+
+                });
 
            },
 
@@ -197,7 +207,23 @@ import axios from 'axios';
        close_model()
        {
            this.showmodel = false;
-       }
+       },
+         add_to_cart(id)
+           {
+               console.log(id);
+
+            axios.get('http://127.0.0.1:8000/api/addcart/'+id)
+            .then(
+                this.sucessproduct()
+            )
+            .catch(error =>console.log(error)
+            );
+
+           },
+           sucessproduct(){
+            alert('Your product is added');
+            this. productcount();
+           }
     },
        computed:
        {
@@ -247,5 +273,11 @@ width: 100px;
 #navbar
 {
     margin-top: 10px;
+}
+#nav{
+     margin-left: 30px;
+}
+a{
+    color: black;
 }
 </style>

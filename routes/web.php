@@ -24,9 +24,11 @@ Route::prefix('Admin')->group(function () {
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index');
+Route::get('/', 'HomeController@index')->name('home');
 Route::get('/profile', 'HomeController@profile')->name('user.home');
-Route::get('/try', 'HomeController@try');
+Route::get('/cart', 'HomeController@Cart');
+Route::get('/cart/payment', 'HomeController@payment');
+
 
 
 
