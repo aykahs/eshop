@@ -70,7 +70,9 @@
                                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                                     @csrf
                                                 </form>
+                                                <a class="dropdown-item" href="{{ route('user.home') }}">Profile</a>
                                             </div>
+
                                         </li>
                                     @endguest
                                 </ul>
@@ -103,7 +105,7 @@
                 <div class="content has-text-centered">
                   <p>
                     <strong>Created </strong> by prajwol shakya. The source code is licensed
-                    The website content is licensed 
+                    The website content is licensed
                   </p>
                 </div>
         </footer>

@@ -38,6 +38,14 @@ Route::get('/cart/paymentinfo', 'Userapicontroller@getcheckout');
 
 Route::post('/cart/pay', 'Userapicontroller@payment');
 
+Route::get('/profile', 'Userapicontroller@getprofile');
+
+Route::delete('/transaction/{id}', 'Userapicontroller@drop');
+
+Route::get('/transaction/recover', 'Userapicontroller@restore');
+
+
+
 
 
 
@@ -56,7 +64,7 @@ Route::prefix('Admin')->group(function () {
 
         Route::post('/create/products', 'Productcontroller@store');
 
-        Route::put('/update/products/{id}', 'Productcontroller@update');
+        Route::put('/update/products/{id?}', 'Productcontroller@update');
 
         Route::delete('/destroy/products/{id}', 'Productcontroller@destroy');
 

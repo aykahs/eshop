@@ -27,6 +27,8 @@ Vue.component('Addmployer', require('./components/addemp.vue').default);
 Vue.component('Addproduct', require('./components/adproduct.vue').default);
 Vue.component('cart', require('./components/cart.vue').default);
 Vue.component('payment', require('./components/payment.vue').default);
+Vue.component('Userhistory', require('./components/user_history.vue').default);
+
 
 
 /**

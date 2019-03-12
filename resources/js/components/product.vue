@@ -158,10 +158,9 @@ import axios from 'axios';
            productcount()
            {
                  var app = this;
-               axios.get('http://127.0.0.1:8000/api/countcart')
+                 axios.get('http://127.0.0.1:8000/api/countcart')
                 .then((response) => {
                     app.pcount = response.data.data
-
                 });
 
            },
@@ -208,6 +207,7 @@ import axios from 'axios';
        {
            this.showmodel = false;
        },
+
          add_to_cart(id)
            {
                console.log(id);
@@ -220,6 +220,7 @@ import axios from 'axios';
             );
 
            },
+
            sucessproduct(){
             alert('Your product is added');
             this. productcount();

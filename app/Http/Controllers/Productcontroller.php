@@ -88,6 +88,9 @@ class Productcontroller extends Controller
     public function update(Request $request,$id )
     {
 
+
+
+
         $validatedData = $request->validate([
             'imagepath' => 'required',
             'title' => 'required',
@@ -95,7 +98,10 @@ class Productcontroller extends Controller
             'categories' =>'required',
             'price' =>'required|digits_between:2,4'
         ]);
-        return new ProductResource ($this->model->update($validatedData,$id));
+        $this->model->update($validatedData,$id);
+        return response()->json('success', 200);
+
+
     }
 
     /**

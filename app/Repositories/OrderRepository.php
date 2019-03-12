@@ -2,9 +2,11 @@
  namespace App\Repositories;
 use Illuminate\Http\Request;
 use App\Order;
+use Auth;
+use Illuminate\Database\Eloquent\SoftDeletes;
 class OrderRepository implements OrderInterface
 {
-
+    use SoftDeletes;
 
       public function create($user_id,$cart,$payment_id)
       {
@@ -15,7 +17,17 @@ class OrderRepository implements OrderInterface
         ]);
       }
 
+      public function destroy($id)
+      {
+            $order=Order::find($id);
+            return $order::destroy($id);
 
+      }
+      public function recover()
+      {
+         $order=Auth::user()->orders;
+        return $order->withTrashed()->restore();
+      }
 
 }
 
