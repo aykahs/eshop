@@ -3,7 +3,8 @@
        <div>
 
            <a @click="restore()" class="button is-success">Recover all transaction</a>
-        <article class="message"  v-for="user in payhistorys" v-bind:key="user.id" id="message">
+           {{ recover.getmessage() }}
+        <article class="message"  v-for="user in fetch.get()" v-bind:key="user.id" id="message">
              <div class="message-header" >
                 <p> Payment Id: {{ user.payment_id}}</p>
                 <a  aria-label="like" @click="drop(user.id)">
@@ -13,10 +14,9 @@
                     </a>
             </div>
             <div class="message-body">
-                <div  v-for="carts in user.cart" v-bind:key="carts.id">
-
-
-                  <div v-for="items in carts" v-bind:key="items.id">
+                <div  v-for="carts in user" v-bind:key="carts.id">
+                    <div  v-for="item in  user" v-bind:key="item.id">
+                  <div v-for="items in item" v-bind:key="items.id">
                         <div v-for="item in items" v-bind:key="item.id">
 
                             {{ item.title }}
@@ -26,6 +26,7 @@
                        <small> Price: {{ items.price}}</small>
 
                   </div>
+                    </div>
 
             </div>
              <small> {{ user.totalprice}}</small>
@@ -40,30 +41,27 @@
     export default {
   data(){
             return{
+                  fetch : new Fetch(),
+                  recover:new Fetch(),
 
-                payhistorys:[],
                 del: new Form(),
             }
             },
 
          created()
        {
-            this.cart();
+
+            this.getdata();
+
        },
         methods:
        {
-           cart()
+           getdata()
            {
-                 var app = this;
-               axios.get('http://127.0.0.1:8000/api/profile')
-                .then((response) => {
-                    app.payhistorys = response.data.data
-
-
-                })
-                .catch(error =>console.log(error)
-                 );
+               this.fetch.Get('get','http://127.0.0.1:8000/api/profile');
            },
+
+
            drop(id)
            {
                 swal({
@@ -76,7 +74,7 @@
                 .then((willDelete) => {
                 if (willDelete) {
                      this.del.delete('delete','http://127.0.0.1:8000/api/transaction/'+id);
-                     this.cart();
+                       this.getdata();
                 } else {
                     swal("Your imaginary file is safe!");
                 }
@@ -84,10 +82,8 @@
            },
            restore()
            {
-
-               axios.get('http://127.0.0.1:8000/api/transaction/recover')
-                .catch(error =>console.log(error)
-                 );
+                this.recover.Get('get','http://127.0.0.1:8000/api/transaction/recover');
+                this.getdata();
            }
        }
     }

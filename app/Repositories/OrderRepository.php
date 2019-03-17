@@ -25,8 +25,8 @@ class OrderRepository implements OrderInterface
       }
       public function recover()
       {
-         $order=Auth::user()->orders;
-        return $order->withTrashed()->restore();
+         $order = Order::where('user_id','=',Auth::user()->id)->withTrashed()->restore();
+        return $order;
       }
 
 }

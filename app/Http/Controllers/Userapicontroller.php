@@ -81,10 +81,11 @@ class Userapicontroller extends Controller
          $orders = Auth::user()->orders;
          $orders->transform(function($order, $key) {
             $order->cart = unserialize($order->cart);
+
             return $order;
           });
-       // dd($orders);
-          return  OrderResource::collection($orders);
+
+        return  OrderResource::collection($orders);
        // return response()->json(['data'=>$orders],200);
         }
 

@@ -14,6 +14,5 @@ class Order extends Model
         return $this->belongsTo('App\User');
     }
 
-
     protected $dates = ['deleted_at'];
 }

@@ -30,10 +30,10 @@
          <div class="level-left" id="nav">
              <div class="level-item">
 
-                    <a class="pagination-previous is-white" v-bind:class="[{disabled: !pagination.prev_page_url }]" @click="fetchproduct(pagination.prev_page_url )">Previous</a>
-                    <a class="pagination-next" v-bind:class="[{disabled: !pagination.next_page_url}]"  @click="fetchproduct(pagination.next_page_url)">Next page</a>
+                    <a class="pagination-previous is-white" v-bind:class="[{disabled: !fetch.getpagination().prev_page_url }]" @click="getdata(fetch.getpagination().prev_page_url )">Previous</a>
+                    <a class="pagination-next" v-bind:class="[{disabled: !fetch.getpagination().next_page_url}]"  @click="getdata(fetch.getpagination().next_page_url)">Next page</a>
 
-                    <a class="pagination-link" aria-label="Goto page 1"> {{ pagination.current_page }}</a>
+                    <a class="pagination-link" aria-label="Goto page 1"> {{ fetch.getpagination().current_page }}</a>
 
 
                 </div>
@@ -119,7 +119,7 @@
 </div>
 
 </div>
-
+{{ fetch.getpagination().next_page_url }}
 </div>
 </template>
 
@@ -131,12 +131,13 @@ import axios from 'axios';
 
         data(){
             return{
+                   fetch : new Fetch({}),
 
             showmodel: false,
             pcount:'',
-            products:[],
+
             search:'',
-            pagination:{},
+
              product:{
                 title:'',
                 description:'',
@@ -148,13 +149,17 @@ import axios from 'axios';
        },
        created()
        {
-            this.fetchproduct();
             this.productcount();
-
+            this.getdata();
        },
 
        methods:
        {
+            getdata(page_url)
+           {
+                page_url = page_url || 'http://127.0.0.1:8000/api/products';
+               this.fetch.Get('get',page_url);
+           },
            productcount()
            {
                  var app = this;
@@ -164,33 +169,6 @@ import axios from 'axios';
                 });
 
            },
-
-           fetchproduct(page_url)
-           {
-               page_url = page_url || 'http://127.0.0.1:8000/api/products';
-               var app = this;
-              axios.get(page_url)
-                .then((response) => {
-                    app.products = response.data.data,
-                    app.makepagination(response.data.meta, response.data.links)
-                });
-
-
-       },
-
-       makepagination(meta, links)
-       {
-           let pagination = {
-               current_page : meta.current_page,
-               last_page_url : meta.last_page,
-               next_page_url : links.next,
-               prev_page_url : links.prev
-           }
-
-           this. pagination =  pagination;
-
-
-       },
         open_model(product)
        {
            this.showmodel = true;
@@ -200,12 +178,16 @@ import axios from 'axios';
            this.product.price = product.price;
            this.product.imagepath = product.imagepath;
             this.product.categories = product.categories;
-
-
        },
        close_model()
        {
            this.showmodel = false;
+            this.product.id = ''
+           this.product.title ='';
+           this.product.description = '';
+           this.product.price = '';
+           this.product.imagepath = '';
+            this.product.categories ='';
        },
 
          add_to_cart(id)
@@ -224,13 +206,14 @@ import axios from 'axios';
            sucessproduct(){
             alert('Your product is added');
             this. productcount();
+            this.getdata();
            }
     },
        computed:
        {
            filteredproduct:function()
            {
-               return this.products.filter((p) =>
+               return this.fetch.get().filter((p) =>
                {
                    return p.title.match(this.search) ||  p.description.match(this.search) ;
                });

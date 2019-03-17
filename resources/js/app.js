@@ -45,6 +45,7 @@ window.Form = Form;
 window.Fetch = Fetch;
 
 
+
 const app = new Vue({
     el: '#app',
 
@@ -53,33 +54,19 @@ const app = new Vue({
             return{
                 image:'',
               form : new Form({
-
                 'name':'',
                 'email':'',
                 'password':'',
                 'role':''
               }),
-
-
-
             }
-
         },
-
         methods:
         {
-
             onsubmit()
             {
                 this.form.submit('post','http://127.0.0.1:8000/api/Admin/create/employer');
                 },
 
             },
-
-
-
-
-
-
-
 });

@@ -2505,11 +2505,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      fetch: new Fetch({}),
       showmodel: false,
       pcount: '',
-      products: [],
       search: '',
-      pagination: {},
       product: {
         title: '',
         description: '',
@@ -2520,31 +2519,19 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    this.fetchproduct();
     this.productcount();
+    this.getdata();
   },
   methods: {
+    getdata: function getdata(page_url) {
+      page_url = page_url || 'http://127.0.0.1:8000/api/products';
+      this.fetch.Get('get', page_url);
+    },
     productcount: function productcount() {
       var app = this;
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('http://127.0.0.1:8000/api/countcart').then(function (response) {
         app.pcount = response.data.data;
       });
-    },
-    fetchproduct: function fetchproduct(page_url) {
-      page_url = page_url || 'http://127.0.0.1:8000/api/products';
-      var app = this;
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(page_url).then(function (response) {
-        app.products = response.data.data, app.makepagination(response.data.meta, response.data.links);
-      });
-    },
-    makepagination: function makepagination(meta, links) {
-      var pagination = {
-        current_page: meta.current_page,
-        last_page_url: meta.last_page,
-        next_page_url: links.next,
-        prev_page_url: links.prev
-      };
-      this.pagination = pagination;
     },
     open_model: function open_model(product) {
       this.showmodel = true;
@@ -2557,6 +2544,12 @@ __webpack_require__.r(__webpack_exports__);
     },
     close_model: function close_model() {
       this.showmodel = false;
+      this.product.id = '';
+      this.product.title = '';
+      this.product.description = '';
+      this.product.price = '';
+      this.product.imagepath = '';
+      this.product.categories = '';
     },
     add_to_cart: function add_to_cart(id) {
       console.log(id);
@@ -2567,13 +2560,14 @@ __webpack_require__.r(__webpack_exports__);
     sucessproduct: function sucessproduct() {
       alert('Your product is added');
       this.productcount();
+      this.getdata();
     }
   },
   computed: {
     filteredproduct: function filteredproduct() {
       var _this = this;
 
-      return this.products.filter(function (p) {
+      return this.fetch.get().filter(function (p) {
         return p.title.match(_this.search) || p.description.match(_this.search);
       });
     }
@@ -2630,27 +2624,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      payhistorys: [],
+      fetch: new Fetch(),
+      recover: new Fetch(),
       del: new Form()
     };
   },
   created: function created() {
-    this.cart();
+    this.getdata();
   },
   methods: {
-    cart: function cart() {
-      var app = this;
-      axios.get('http://127.0.0.1:8000/api/profile').then(function (response) {
-        app.payhistorys = response.data.data;
-      }).catch(function (error) {
-        return console.log(error);
-      });
+    getdata: function getdata() {
+      this.fetch.Get('get', 'http://127.0.0.1:8000/api/profile');
     },
     drop: function drop(id) {
       var _this = this;
@@ -2665,16 +2652,15 @@ __webpack_require__.r(__webpack_exports__);
         if (willDelete) {
           _this.del.delete('delete', 'http://127.0.0.1:8000/api/transaction/' + id);
 
-          _this.cart();
+          _this.getdata();
         } else {
           swal("Your imaginary file is safe!");
         }
       });
     },
     restore: function restore() {
-      axios.get('http://127.0.0.1:8000/api/transaction/recover').catch(function (error) {
-        return console.log(error);
-      });
+      this.recover.Get('get', 'http://127.0.0.1:8000/api/transaction/recover');
+      this.getdata();
     }
   }
 });
@@ -39885,10 +39871,12 @@ var render = function() {
                   "a",
                   {
                     staticClass: "pagination-previous is-white",
-                    class: [{ disabled: !_vm.pagination.prev_page_url }],
+                    class: [
+                      { disabled: !_vm.fetch.getpagination().prev_page_url }
+                    ],
                     on: {
                       click: function($event) {
-                        return _vm.fetchproduct(_vm.pagination.prev_page_url)
+                        _vm.getdata(_vm.fetch.getpagination().prev_page_url)
                       }
                     }
                   },
@@ -39899,10 +39887,12 @@ var render = function() {
                   "a",
                   {
                     staticClass: "pagination-next",
-                    class: [{ disabled: !_vm.pagination.next_page_url }],
+                    class: [
+                      { disabled: !_vm.fetch.getpagination().next_page_url }
+                    ],
                     on: {
                       click: function($event) {
-                        return _vm.fetchproduct(_vm.pagination.next_page_url)
+                        _vm.getdata(_vm.fetch.getpagination().next_page_url)
                       }
                     }
                   },
@@ -39915,7 +39905,7 @@ var render = function() {
                     staticClass: "pagination-link",
                     attrs: { "aria-label": "Goto page 1" }
                   },
-                  [_vm._v(" " + _vm._s(_vm.pagination.current_page))]
+                  [_vm._v(" " + _vm._s(_vm.fetch.getpagination().current_page))]
                 )
               ])
             ]),
@@ -40110,7 +40100,8 @@ var render = function() {
         }),
         0
       )
-    ])
+    ]),
+    _vm._v("\n" + _vm._s(_vm.fetch.getpagination().next_page_url) + "\n")
   ])
 }
 var staticRenderFns = [
@@ -40146,58 +40137,57 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "a",
-      {
-        staticClass: "button is-success",
-        on: {
-          click: function($event) {
-            return _vm.restore()
+  return _c(
+    "div",
+    [
+      _c(
+        "a",
+        {
+          staticClass: "button is-success",
+          on: {
+            click: function($event) {
+              return _vm.restore()
+            }
           }
-        }
-      },
-      [_vm._v("Recover all transaction")]
-    ),
-    _vm._v(" "),
-    _vm.payhistorys
-      ? _c(
-          "div",
-          _vm._l(_vm.payhistorys, function(user) {
-            return _c(
-              "article",
-              {
-                key: user.id,
-                staticClass: "message",
-                attrs: { id: "message" }
-              },
+        },
+        [_vm._v("Recover all transaction")]
+      ),
+      _vm._v("\n    " + _vm._s(_vm.recover.getmessage()) + "\n "),
+      _vm._l(_vm.fetch.get(), function(user) {
+        return _c(
+          "article",
+          { key: user.id, staticClass: "message", attrs: { id: "message" } },
+          [
+            _c("div", { staticClass: "message-header" }, [
+              _c("p", [_vm._v(" Payment Id: " + _vm._s(user.payment_id))]),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  attrs: { "aria-label": "like" },
+                  on: {
+                    click: function($event) {
+                      return _vm.drop(user.id)
+                    }
+                  }
+                },
+                [_vm._m(0, true)]
+              )
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "message-body" },
               [
-                _c("div", { staticClass: "message-header" }, [
-                  _c("p", [_vm._v(" Payment Id: " + _vm._s(user.payment_id))]),
-                  _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      attrs: { "aria-label": "like" },
-                      on: {
-                        click: function($event) {
-                          return _vm.drop(user.id)
-                        }
-                      }
-                    },
-                    [_vm._m(0, true)]
-                  )
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "message-body" },
-                  [
-                    _vm._l(user.cart, function(carts) {
+                _vm._l(user, function(carts) {
+                  return _c(
+                    "div",
+                    { key: carts.id },
+                    _vm._l(user, function(item) {
                       return _c(
                         "div",
-                        { key: carts.id },
-                        _vm._l(carts, function(items) {
+                        { key: item.id },
+                        _vm._l(item, function(items) {
                           return _c(
                             "div",
                             { key: items.id },
@@ -40205,9 +40195,9 @@ var render = function() {
                               _vm._l(items, function(item) {
                                 return _c("div", { key: item.id }, [
                                   _vm._v(
-                                    "\n\n                        " +
+                                    "\n\n                     " +
                                       _vm._s(item.title) +
-                                      "\n\n                    "
+                                      "\n\n                 "
                                   )
                                 ])
                               }),
@@ -40227,18 +40217,20 @@ var render = function() {
                         0
                       )
                     }),
-                    _vm._v(" "),
-                    _c("small", [_vm._v(" " + _vm._s(user.totalprice))])
-                  ],
-                  2
-                )
-              ]
+                    0
+                  )
+                }),
+                _vm._v(" "),
+                _c("small", [_vm._v(" " + _vm._s(user.totalprice))])
+              ],
+              2
             )
-          }),
-          0
+          ]
         )
-      : _c("div", [_c("small", [_vm._v("transaction not avaliable")])])
-  ])
+      })
+    ],
+    2
+  )
 }
 var staticRenderFns = [
   function() {
@@ -52366,7 +52358,6 @@ module.exports = function(module) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_Form__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./core/Form */ "./resources/js/core/Form.js");
 /* harmony import */ var _core_Fetch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./core/Fetch */ "./resources/js/core/Fetch.js");
-/* harmony import */ var _core_Fetch__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_core_Fetch__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
@@ -52409,7 +52400,7 @@ Vue.component('Userhistory', __webpack_require__(/*! ./components/user_history.v
 
 window.axios = axios__WEBPACK_IMPORTED_MODULE_2___default.a;
 window.Form = _core_Form__WEBPACK_IMPORTED_MODULE_0__["default"];
-window.Fetch = _core_Fetch__WEBPACK_IMPORTED_MODULE_1___default.a;
+window.Fetch = _core_Fetch__WEBPACK_IMPORTED_MODULE_1__["default"];
 var app = new Vue({
   el: '#app',
   data: function data() {
@@ -53149,51 +53140,86 @@ function () {
 /*!************************************!*\
   !*** ./resources/js/core/Fetch.js ***!
   \************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Errors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Errors */ "./resources/js/core/Errors.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+
+
 var Fetch =
 /*#__PURE__*/
 function () {
   function Fetch() {
     _classCallCheck(this, Fetch);
+
+    this.fetchs = [];
+    this.pagination = {};
+    this.message = '';
   }
 
   _createClass(Fetch, [{
-    key: "fetchdata",
-    value: function fetchdata(url) {
-      var _this = this;
+    key: "Get",
+    value: function Get(requestType, url) {
+      axios[requestType](url).then(this.record.bind(this));
+    }
+  }, {
+    key: "record",
+    value: function record(fetch) {
+      this.fetchs = fetch.data.data;
 
-      axios.get(url).then(function (response) {
-        console.log(response.data.data), _this.makepagination(response.data.meta, response.data.links);
-      });
+      if (fetch.data.meta) {
+        this.makepagination(fetch);
+      }
+
+      if (fetch.data.message) {
+        this.makemessage(fetch);
+      }
+    }
+  }, {
+    key: "makemessage",
+    value: function makemessage(message) {
+      this.message = message.data.message;
+    }
+  }, {
+    key: "getmessage",
+    value: function getmessage() {
+      return this.message;
     }
   }, {
     key: "makepagination",
-    value: function makepagination(meta, links) {
+    value: function makepagination(page) {
       var pagination = {
-        current_page: meta.current_page,
-        last_page_url: meta.last_page,
-        next_page_url: links.next,
-        prev_page_url: links.prev
+        current_page: page.data.meta.current_page,
+        last_page_url: page.data.meta.last_page,
+        next_page_url: page.data.links.next,
+        prev_page_url: page.data.links.prev
       };
       this.pagination = pagination;
     }
   }, {
-    key: "senddata",
-    value: function senddata() {
-      return this.data;
+    key: "getpagination",
+    value: function getpagination() {
+      return this.pagination;
+    }
+  }, {
+    key: "get",
+    value: function get() {
+      return this.fetchs;
     }
   }]);
 
   return Fetch;
 }();
+
+/* harmony default export */ __webpack_exports__["default"] = (Fetch);
 
 /***/ }),
 
@@ -53256,7 +53282,7 @@ function () {
   }, {
     key: "delete",
     value: function _delete(requestType, url) {
-      axios[requestType](url).then(this.onsucessdel.bind(this)).catch(this.onfail.bind(this));
+      axios[requestType](url).then(this.onsucessdel.bind(this));
     }
   }, {
     key: "onsucess",

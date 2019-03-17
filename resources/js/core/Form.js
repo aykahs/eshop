@@ -1,4 +1,5 @@
 import Errors from './Errors';
+
 import swal from 'sweetalert';
 class Form{
 
@@ -11,6 +12,7 @@ class Form{
           this[field] = data[field];
         }
       this.errors = new Errors();
+
 
 
     }
@@ -37,17 +39,12 @@ class Form{
               .then(this.onsucess.bind(this))
               .catch( this.onfail.bind(this)
               );
-
-
   }
+
   delete(requestType, url)
   {
             axios[requestType](url)
-            .then(this.onsucessdel.bind(this))
-            .catch( this.onfail.bind(this)
-    );
-
-
+            .then(this.onsucessdel.bind(this));
 }
           onsucess(response)
           {
@@ -74,6 +71,7 @@ class Form{
           {
             this.errors.record(error.response.data.errors);
           }
+
     }
 
     export default Form;
